@@ -1,8 +1,11 @@
 # Student Registration System - Lab 4
 
 **Student Name:** Alicia Sasamba 
+
 **Student Number:** 224081772
+
 **Course:** WAD621S  
+
 **Assignment:** Lab 4 - Registration → Profile Cards  
 
 ## Project Description
