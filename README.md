@@ -19,6 +19,7 @@ This is a complete student registration system built with HTML, CSS, and JavaScr
 
 ### Stretch Goals Implemented:
 - **LocalStorage Persistence:** All student data is automatically saved to browser storage and restored when the page reloads
+- **Search and edit**
 
 ## How to Run
 1. Extract all files from the ZIP
@@ -34,9 +35,12 @@ This is a complete student registration system built with HTML, CSS, and JavaScr
 
 ## How to Use
 1. Fill out the registration form with student details
-2. Click "Add Student" to create a profile card and table entry
-3. Use "Remove Student" buttons to delete entries
-4. Data automatically saves and will be restored when you reload the page
+2. Profile URL is option if left empty a default URL is used
+3. Click "Add Student" to create a profile card and table entry
+4. Use "Remove Student" buttons to delete entries
+5. Data automatically saves and will be restored when you reload the page
+6. Search for student by name , email or programme
+7. Edit students by clicking the "Edit" button and then the "Update Student" button, data will automatically be updated in profile cards and table 
 
 ## Technical Features
 - Responsive design that works on all devices
