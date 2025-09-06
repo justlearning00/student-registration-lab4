@@ -51,6 +51,3 @@ This is a complete student registration system built with HTML, CSS, and JavaScr
 - All form validation happens on both client-side for UX and prevents invalid submissions
 - Profile photos use fallback placeholder images if URLs are invalid
 - The design follows modern web accessibility standards
-
----
-*This project demonstrates proficiency in HTML5, CSS3, JavaScript DOM manipulation, form validation, and accessibility best practices.*
