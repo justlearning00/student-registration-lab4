@@ -192,10 +192,44 @@ textarea {
 }
 
 /* Profile Cards Styles */
-.cards-section h2 {
+.card-sec h2 {
     color: #2d3748;
     margin-bottom: 25px;
     font-size: 1.8rem;
+}
+
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.search-container input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-container button {
+    padding: 10px 15px;
+    background: #718096;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
 
 .cards-container {
@@ -203,6 +237,7 @@ textarea {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
     margin-bottom: 40px;
+    margin-top: 25px;
 }
 
 .card-person {
@@ -280,8 +315,31 @@ textarea {
     margin-bottom: 8px;
 }
 
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+.edit-btn {
+    width: 50%;
+    background: linear-gradient(45deg, #38a169, #2f855a);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+      margin-top: 15px;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(56, 161, 105, 0.4);
+}
+
 .remove-btn {
-    width: 100%;
+    width: 50%;
     background: linear-gradient(45deg, #e53e3e, #c53030);
     color: white;
     padding: 10px;

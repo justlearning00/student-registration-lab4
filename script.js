@@ -1,6 +1,7 @@
 // Global array to store student data
 let students = [];
 let studentIdCounter = 0;
+let editingStudentId = null; // Track which student is being edited
 
 // Field Validation 
 function validateRequired(value, fieldName) {
@@ -62,13 +63,10 @@ function createProfileCard(data) {
     card.dataset.studentId = data.id;
 
     
-    // Create initials placeholder URL
-    const initials = data.firstName.charAt(0).toUpperCase() + data.lastName.charAt(0).toUpperCase();
  const placeholderUrl = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
 
     card.innerHTML = `
         <img src="${data.photoUrl || placeholderUrl}" 
-             alt="Profile photo of ${data.firstName} ${data.lastName}" 
              onerror="this.onerror=null; this.src='${placeholderUrl}'">
         <div class="info">
             <h3>${data.firstName} ${data.lastName}</h3>
@@ -79,7 +77,10 @@ function createProfileCard(data) {
             <p><strong>Email:</strong> ${data.email}</p>
             ${data.interests ? `<div class="interests"><strong>Interests:</strong> ${data.interests}</div>` : ''}
         </div>
-        <button class="remove-btn" onclick="removeStudent(${data.id})">Remove Student</button>
+       <div class="card-actions">
+            <button class="edit-btn" onclick="editStudent(${data.id})">Edit</button>
+            <button class="remove-btn" onclick="removeStudent(${data.id})">Remove</button>
+        </div>
     `;
     return card;
 }
@@ -138,6 +139,129 @@ function removeStudent(studentId) {
     document.getElementById("live").textContent =
         "Student has been removed successfully.";
 }
+//Search Functionality 
+function filterStudents(searchTerm) {
+    const cards = document.querySelectorAll('.card-person');
+    const tableRows = document.querySelectorAll('#summary tbody tr');
+    let visibleCount = 0;
+
+    cards.forEach((card, index) => {
+        const studentId = card.dataset.studentId;
+        const student = students.find(s => s.id == studentId);
+        
+        if (!student) return;
+        
+        const searchText = `${student.firstName} ${student.lastName} ${student.email} ${student.programme}`.toLowerCase();
+        const isMatch = searchText.includes(searchTerm.toLowerCase());
+        
+        // Show/hide card
+        card.style.display = isMatch ? 'block' : 'none';
+        
+        // Show/hide table row
+        if (tableRows[index]) {
+            tableRows[index].style.display = isMatch ? '' : 'none';
+        }
+        
+        if (isMatch) visibleCount++;
+    });
+
+    // Show empty state if no matches
+    const emptyState = document.querySelector('.empty-state');
+    if (emptyState) {
+        emptyState.style.display = visibleCount === 0 && searchTerm ? 'block' : 'none';
+        if (visibleCount === 0 && searchTerm) {
+            emptyState.innerHTML = '<div>No students found matching your search.</div>';
+        } else {
+            emptyState.innerHTML = '<div>No students registered yet. Fill out the form above to add your first student!</div>';
+        }
+    }
+}
+
+function editStudent(studentId) {
+    const student = students.find(s => s.id === Number(studentId));
+    if (!student) return;
+
+    // Fill form fields with current student data
+    document.getElementById('firstName').value = student.firstName;
+    document.getElementById('lastName').value = student.lastName;
+    document.getElementById('email').value = student.email;
+    document.getElementById('programme').value = student.programme;
+    document.getElementById('photoUrl').value = student.photoUrl || '';
+    document.getElementById('interests').value = student.interests || '';
+
+    // Set year radio button
+    const yearRadio = document.querySelector(`input[name="year"][value="${student.year}"]`);
+    if (yearRadio) yearRadio.checked = true;
+
+    // Switch form to update mode
+    editingStudentId = studentId;
+    const submitBtn = document.querySelector('.submit-btn');
+    submitBtn.textContent = 'Update Student';
+    submitBtn.style.background = 'linear-gradient(45deg, #38a169, #2f855a)';
+
+    // Scroll to form
+    document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+
+    // Live region feedback
+    document.getElementById("live").textContent = `Editing ${student.firstName} ${student.lastName}. Make changes and click Update.`;
+}
+
+
+function updateStudent(studentId, newData) {
+    const index = students.findIndex(s => s.id === Number(studentId));
+    if (index === -1) return;
+
+    // Update student data in array
+    students[index] = { ...students[index], ...newData };
+
+    // Update card in place
+    const card = document.querySelector(`.card-person[data-student-id="${studentId}"]`);
+    if (card) {
+        card.innerHTML = `
+            <img src="${newData.photoUrl || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" 
+                 onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'">
+            <div class="info">
+                <h3>${newData.firstName} ${newData.lastName}</h3>
+                <div>
+                    <span class="badge">${newData.programme}</span>
+                    <span class="badge">Year ${newData.year}</span>
+                </div>
+                <p><strong>Email:</strong> ${newData.email}</p>
+                ${newData.interests ? `<div class="interests"><strong>Interests:</strong> ${newData.interests}</div>` : ''}
+            </div>
+           <div class="card-actions">
+                <button class="edit-btn" onclick="editStudent(${studentId})">Edit</button>
+                <button class="remove-btn" onclick="removeStudent(${studentId})">Remove</button>
+            </div>
+        `;
+    }
+
+    // Update table row in place
+    const row = document.querySelector(`#summary tbody tr[data-student-id="${studentId}"]`);
+    if (row) {
+        row.innerHTML = `
+            <td>${newData.firstName} ${newData.lastName}</td>
+            <td>${newData.email}</td>
+            <td>${newData.programme}</td>
+            <td>Year ${newData.year}</td>
+            <td>${newData.interests || 'Not specified'}</td>
+        `;
+    }
+
+    saveToStorage();
+    resetFormToAddMode();
+
+    document.getElementById("live").textContent =
+        `${newData.firstName} ${newData.lastName} has been updated successfully.`;
+}
+
+
+function resetFormToAddMode() {
+    editingStudentId = null;
+    const submitBtn = document.querySelector('.submit-btn');
+    submitBtn.textContent = 'Add Student';
+    submitBtn.style.background = 'linear-gradient(45deg, #667eea, #4b5ba2)';
+}
 
 // Empty State 
 function toggleEmptyState() {
@@ -192,11 +316,18 @@ document.getElementById("regForm").addEventListener("submit", function (e) {
     isValid = validateYear() && isValid;
     isValid = validateUrl(data.photoUrl) && isValid;
 
+    
     if (isValid) {
-        addStudent(data);
+        if (editingStudentId) {
+            // Update existing student
+            updateStudent(editingStudentId, data);
+        } else {
+            // Add new student
+            addStudent(data);
+        }
         this.reset();
         document.getElementById("live").textContent = "";
-    } else {
+    }else {
         document.getElementById("live").textContent =
             "Please fix the errors before submitting.";
     }
@@ -238,4 +369,16 @@ document.addEventListener("keydown", function (e) {
 //On Load 
 document.addEventListener("DOMContentLoaded", function () {
     loadFromStorage();
+ // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const clearButton = document.getElementById('clearSearch');
+    
+    searchInput.addEventListener('input', function() {
+        filterStudents(this.value);
+    });
+    
+    clearButton.addEventListener('click', function() {
+        searchInput.value = '';
+        filterStudents('');
+    });
 });
