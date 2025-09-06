@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="Container">
+        <h1>Student Registration System</h1>
+
+        <!---Registration Form --->
+         <div class="form-section">
+            <h2>Student Registration Form</h2>
+            <p class="required-note">Fields marked with <span class="required-asterisk">*</span> are required</p>
+            <form id="regForm" novalidate>
+                <div class="form-grid">
+                    <div class="form-grp">
+                         <label for="firstName" class="required">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                        <small class="error" id="err-firstName"></small>
+                    </div>
+
+                    <div class="form-grp">
+                        <label for="lastName" class="required">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                        <small class="error" id="err-lastName"></small>
+                    </div>
+
+                    <div class="form-grp">
+                        <label for="email" class="required">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <small class="error" id="err-email"></small>
+                    </div>
+
+                    <div class="form-grp">
+                        <label for="programme" class="required">Programme</label>
+                        <input type="text" id="programme" name="programme" required placeholder="e.g. Computer Science, Data Science, etc.">
+                        <small class="error" id="err-programme"></small>
+                    </div>
+
+                    <div class="form-grp">
+                        <label for="photoUrl">Photo URL (Optional)</label>
+                        <input type="url" id="photoUrl" name="photoUrl" placeholder="https//example.com/image">
+                        <small class="help-txt">(Paste link to an image online, or leave empty for default)</small>
+                    
+                    </div>
+                </div>
+                <fieldset>
+                    <legend class="required">Year Of Study</legend>
+                    <div class="radio-grp">
+                        <label><input type="radio" name="year" value="1" required>Year 1</label>
+                        <label><input type="radio" name="year" value="2"> Year 2</label>
+                        <label><input type="radio" name="year" value="3"> Year 3</label>
+                        <label><input type="radio" name="year" value="4"> Year 4</label>
+                    </div>
+                     <small class="error" id="err-year"></small>
+                </fieldset>
+                <div class="form-grp">
+                    <label for="interests">Interests</label>
+                    <textarea id="interests" name="interests" placeholder="Tell us about your academic and personal interests..."></textarea>
+                    <small class="error" id="err-interests"></small>
+                </div>
+                <div aria-live="polite" class="sr" id="live"></div>
+                <button type="submit" class="submit-btn">Add Student</button>
+            </form>
+          </div> 
+          
+          <!--Profile Cards-->
+          <div class="card-sec">
+            <h2>Student Profiles</h2>
+            <div id="cards" class="cards-container"></div>
+            
+            <div class="empty-state">
+                <p>No students registered yet. Please fill out the form to add your fisrt student!</p>
+            </div>
+          </div>
+           <!-- Summary Table -->
+        <div class="table-container">
+            <h2>Students Summary</h2>
+            <table id="summary">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Programme</th>
+                        <th>Year</th>
+                        <th>Interests</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic content will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
